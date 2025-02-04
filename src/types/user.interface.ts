@@ -1,26 +1,26 @@
 import { TErrorMsg, TUser } from "./user.types.ts";
 
 export interface IUserData {
-  userId: string;
-  userPw: string;
   userEmail: string;
+  userPw: string;
   userNick: string;
   userRole: TUser;
 }
 
 export interface IJoinPayload {
-  userId: string;
+  userEmail: string;
   userPw: string;
   userPwConfirm: string;
-  userEmail: string;
   userNick: string;
 }
 
 export interface IJoinValid {
-  id: IValid;
+  topPhase: number;
+  phase: number;
+  email: IValid;
   pw: IValid;
   pwConfirm: IValid;
-  email: IValid;
+  emailCheck: IValid;
   nick: IValid;
 }
 

@@ -1,4 +1,3 @@
-// 차번 cctv 삭제시 사용함.
 import {
   useMutation,
   UseMutationResult,
@@ -16,21 +15,81 @@ export const useUserInfoMutation = (
   param: string,
 ): UseQueryResult<AxiosResponse<IResponse<IUserData>>, AxiosError> => {
   return useQuery({
-    queryKey: [QueryKeys.member.info(), param],
+    queryKey: [QueryKeys.member.info, param],
     queryFn: () => axios.post(API.USER.INFO),
     enabled: false,
   });
 };
 
 // id-check
-export const useUserIdCheck = (
+export const useUserEmailDupCheck = (
   param: string,
 ): UseQueryResult<AxiosResponse<IResponse<boolean>>, AxiosError> => {
   return useQuery({
-    queryKey: [QueryKeys.member.id(param), param],
+    queryKey: [QueryKeys.member.id(param)],
     queryFn: () => axios.get(API.USER.ID_CHECK.replace(`{id}`, param)),
     enabled: false,
     retry: false,
+  });
+};
+
+// 이메일 인증 코드 발송 요청
+export const useSendEmailCode = (
+  email: string,
+): UseQueryResult<AxiosResponse<IResponse<boolean>>, AxiosError> => {
+  return useQuery({
+    queryKey: [QueryKeys.member.email.codeSend(email)],
+    queryFn: () =>
+      axios.post(API.USER.SEND_CODE, {
+        email: email,
+      }),
+    enabled: false,
+    retry: false,
+  });
+};
+
+// 이메일 인증 코드 검증 요청
+export const useVerifyEmailCodeMutation = (
+  successHandler: (res: boolean) => void,
+  failHandler: () => void,
+): UseMutationResult<
+  boolean,
+  AxiosError,
+  { code: string; email: string },
+  unknown
+> =>
+  useMutation<boolean, AxiosError, { code: string; email: string }>({
+    mutationFn: (param: { code: string; email: string }) =>
+      axios
+        .post(API.USER.VERIFY_CODE, {
+          email: param.email,
+          code: param.code,
+        })
+        .then((res) => {
+          console.log("useVerifyEmailCodeMutation res ", res);
+          return res.data.data;
+        }),
+
+    onSuccess: (res) => {
+      console.log("useVerifyEmailCodeMutation onSuccess  res \n", res);
+      successHandler(res);
+    },
+
+    onError: (res) => {
+      console.log("useVerifyEmailCodeMutation onError  res \n", res);
+      failHandler();
+    },
+  });
+
+// 닉네임 요청
+export const useUserNickQuery = (): UseQueryResult<string, AxiosError> => {
+  return useQuery({
+    queryKey: QueryKeys.member.nick(),
+    queryFn: () =>
+      axios
+        .get<IResponse<string>>(API.USER.NICK)
+        .then(({ data }) => data?.data)
+        .catch((err) => console.error("err ", err)),
   });
 };
 
@@ -43,9 +102,9 @@ export const useUserJoinMutation = (
     mutationFn: (param: IJoinPayload) =>
       axios
         .post(API.USER.INFO, {
-          userId: param.userId,
-          password: param.userPw,
+          // userId: param.userId,
           email: param.userEmail,
+          password: param.userPw,
           nickName: param.userNick,
         })
         .then((res) => {
@@ -63,22 +122,3 @@ export const useUserJoinMutation = (
       failHandler();
     },
   });
-
-// export const useVhclCctvRegMutation = (successHandler: () => void, failHandler: () => void): UseMutationResult<void, AxiosError, IVhclCctvApiPayload, unknown> => useMutation<void, AxiosError, IVhclCctvApiPayload>({
-//     mutationFn: (param: IVhclCctvApiPayload) => axios.post(API.VEHICLE.CCTV.REG, null, {
-//         params: {...param}
-//     }).then(res => {
-//         console.log("useVhclCctvRegQuery res ", res);
-//         return res.data.data
-//     }),
-//
-//     onSuccess: (res) => {
-//         console.log("useVhclCctvRegQuery onSuccess  res \n", res)
-//         successHandler()
-//     },
-//
-//     onError: (res) => {
-//         console.log("useVhclCctvRegQuery onError  res \n", res)
-//         failHandler()
-//     }
-// })

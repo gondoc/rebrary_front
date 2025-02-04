@@ -1,4 +1,4 @@
-import JoinRowInput from "@/components/join/JoinRowInput.tsx";
+import JoinRowInput from "@/components/join/common/JoinRowInput.tsx";
 import useUserStore from "@/store/userStore.ts";
 import { useEffect } from "react";
 import { TErrorMsg } from "@/types/user.types.ts";
@@ -16,6 +16,11 @@ const UserPwArea = () => {
           pw: { isValid: true },
         });
       }
+    } else {
+      setJoinValid({
+        ...joinValid,
+        pw: { isValid: false },
+      });
     }
   }, [joinPayload.userPw]);
 

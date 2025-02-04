@@ -11,5 +11,8 @@ export const API = {
   USER: {
     INFO: `${apiUrl}/user/signUp`,
     ID_CHECK: `${apiUrl}/user/check/{id}`,
+    SEND_CODE: `${apiUrl}/user/reqCd`,
+    VERIFY_CODE: `${apiUrl}/user/verifyCd`,
+    NICK: `${apiUrl}/user/nick`,
   },
 };

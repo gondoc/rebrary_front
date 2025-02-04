@@ -1,4 +1,4 @@
-import JoinRowInput from "@/components/join/JoinRowInput.tsx";
+import JoinRowInput from "@/components/join/common/JoinRowInput.tsx";
 import useUserStore from "@/store/userStore.ts";
 import { useEffect } from "react";
 import { IValid } from "@/types/user.interface.ts";
@@ -9,7 +9,7 @@ const UserPwConfirmArea = () => {
     useUserStore();
 
   useEffect(() => {
-    if (joinPayload.userPw && joinPayload.userPwConfirm) {
+    if (joinPayload.userPwConfirm) {
       if (
         validationUserPwConfirm(joinPayload.userPw, joinPayload.userPwConfirm)
       ) {

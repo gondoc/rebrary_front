@@ -1,7 +1,6 @@
-import { IJoinPayload } from "../types/user.interface.ts";
+import { IJoinPayload, IJoinValid } from "../types/user.interface.ts";
 
 export const INIT_JOIN_PAYLOAD: IJoinPayload = {
-  userId: "",
   userPw: "",
   userPwConfirm: "",
   userEmail: "",
@@ -10,4 +9,18 @@ export const INIT_JOIN_PAYLOAD: IJoinPayload = {
 
 export const INIT_VALID = {
   isValid: false,
+};
+
+export const INIT_JOIN_VALID: IJoinValid = {
+  topPhase: 0,
+  phase: 0,
+  // topPhase: 1,
+  // phase: 1,
+  // topPhase: 2,
+  // phase: 2,
+  email: INIT_VALID,
+  pw: INIT_VALID,
+  pwConfirm: INIT_VALID,
+  emailCheck: INIT_VALID,
+  nick: INIT_VALID,
 };

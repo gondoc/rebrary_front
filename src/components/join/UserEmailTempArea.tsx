@@ -1,11 +1,13 @@
 import useUserStore from "@/store/userStore.ts";
 import { useEffect } from "react";
 import { IValid } from "@/types/user.interface.ts";
-import JoinRowInput from "@/components/join/JoinRowInput.tsx";
+import JoinRowInput from "@/components/join/common/JoinRowInput.tsx";
+import { useUserEmailDupCheck } from "@/reactQuery/memberQuery.ts";
 
-const UserEmailArea = () => {
+const UserEmailTempArea = () => {
   const { joinPayload, setJoinPayload, joinValid, setJoinValid } =
     useUserStore();
+  const { refetch: idCheck } = useUserEmailDupCheck(joinPayload.userEmail);
 
   useEffect(() => {
     if (joinPayload.userEmail) {
@@ -47,4 +49,4 @@ const UserEmailArea = () => {
   );
 };
 
-export default UserEmailArea;
+export default UserEmailTempArea;

@@ -1,4 +1,4 @@
-/*dashboard commmon style*/
+/*re;brary commmon style*/
 html,
 body {
     margin: 0;
@@ -16,6 +16,10 @@ input {
 }
 
 a {
+    text-decoration: none;
+}
+
+a:link {
     text-decoration: none;
 }
 
@@ -64,4 +68,17 @@ textarea {
     -moz-appearance: none;
     appearance: none;
     outline: 0;
+}
+
+.back-btn {
+    cursor: pointer;
+
+    i {
+        display: inline-block;
+        width: 35px;
+        height: 35px;
+        margin: 15px 15px;
+        background-size: 100%;
+        background: url("../images/common/img_back_btn.svg") no-repeat;
+    }
 }

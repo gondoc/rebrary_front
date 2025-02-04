@@ -91,18 +91,20 @@
 
     div {
         position: absolute;
+        display: flex;
         top: 50%;
         bottom: 0;
         right: 15px;
         width: 24px;
         height: 24px;
         transform: translateY(-50%);
-        background: url("../images/img_eye_off.svg") no-repeat center/100%;
-        cursor: pointer;
 
         i {
-            background: url("../images/img_eye_off.svg") no-repeat center/100%;
-            background-size: 24px;
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: url("../images/img_eye_off.svg") no-repeat;
+            background-size: 100%;
         }
     }
 }
@@ -142,109 +144,26 @@
     a {
         text-decoration: none;
         color: #111111;
+        cursor: pointer;
+    }
+
+    label {
+        cursor: pointer;
     }
 }
 
-.login-container .login-options-container .register-area {
+.login-container .register-area {
     display: flex;
     align-items: flex-end;
     justify-content: center;
     width: 422px;
     height: 46px;
-    bottom: 0px;
-    /*padding-top: 400px;*/
+    bottom: 0;
 
     a {
         font-weight: 500;
         font-size: 16px;
         color: #BE5205;
-        text-decoration: none;
-
-        &:link {
-            color: #BE5205;
-            text-decoration: none;
-        }
-
-        &:visited {
-            color: #BE5205;
-            text-decoration: none;
-        }
+        cursor: pointer;
     }
 }
-
-/*.login-container .login-area .input-area .password-wrapper i {*/
-/*    !*position: absolute;*!*/
-/*    !*left: 75%;*!*/
-/*    !*top: 27px;*!*/
-/*    !*width: 24px;*!*/
-/*    !*height: 24px;*!*/
-/*    !*color: orange;*!*/
-/*    !*background-image: url("../images/img_eye_off.svg");*!*/
-/*}*/
-
-/*.login-container label {*/
-/*    display: block;*/
-/*    text-align: left;*/
-/*    margin-bottom: 8px;*/
-/*    font-size: 14px;*/
-/*    color: #333333;*/
-/*}*/
-
-/*.login-container input {*/
-/*    width: 100%;*/
-/*    padding: 10px;*/
-/*    margin-bottom: 20px;*/
-/*    border: 1px solid #ccc;*/
-/*    border-radius: 6px;*/
-/*    font-size: 16px;*/
-/*}*/
-
-/*.login-container .password-wrapper {*/
-/*    position: relative;*/
-/*}*/
-
-/*.login-container .password-wrapper input {*/
-/*    padding-right: 40px;*/
-/*}*/
-
-/*.login-container .toggle-password {*/
-/*    position: absolute;*/
-/*    right: 10px;*/
-/*    top: 50%;*/
-/*    transform: translateY(-50%);*/
-/*    cursor: pointer;*/
-/*}*/
-
-/*.login-container button {*/
-/*    width: 100%;*/
-/*    padding: 10px;*/
-/*    background-color: #c08d5c;*/
-/*    color: #ffffff;*/
-/*    border: none;*/
-/*    border-radius: 6px;*/
-/*    font-size: 16px;*/
-/*    cursor: pointer;*/
-/*}*/
-
-/*.login-container .options {*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*    align-items: center;*/
-/*    font-size: 14px;*/
-/*    margin-top: 10px;*/
-/*}*/
-
-/*.login-container .options a {*/
-/*    color: #c08d5c;*/
-/*    text-decoration: none;*/
-/*}*/
-
-/*.login-container .register {*/
-/*    margin-top: 20px;*/
-/*    font-size: 14px;*/
-/*}*/
-
-/*.login-container .register a {*/
-/*    color: #c08d5c;*/
-/*    text-decoration: none;*/
-/*}*/
