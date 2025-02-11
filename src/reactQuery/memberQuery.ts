@@ -26,12 +26,34 @@ export const useUserEmailDupCheck = (
   param: string,
 ): UseQueryResult<AxiosResponse<IResponse<boolean>>, AxiosError> => {
   return useQuery({
-    queryKey: [QueryKeys.member.id(param)],
+    queryKey: [QueryKeys.member.idCheck(param)],
     queryFn: () => axios.get(API.USER.ID_CHECK.replace(`{id}`, param)),
     enabled: false,
     retry: false,
   });
 };
+
+// nick-check
+export const useUserNickDupCheck = (param: string): boolean => {
+  const { data } = useQuery({
+    queryKey: [QueryKeys.member.nickCheck(param)],
+    queryFn: () => axios.get(API.USER.NICK_CHECK.replace(`{nick}`, param)),
+    enabled: param !== "",
+  });
+
+  return data && data?.data?.data;
+};
+
+// // nick-check
+// export const useUserNickDupCheck = (
+//   param: string,
+// ): UseQueryResult<AxiosResponse<IResponse<boolean>>, AxiosError> => {
+//   return useQuery({
+//     queryKey: [QueryKeys.member.nickCheck(param)],
+//     queryFn: () => axios.get(API.USER.NICK_CHECK.replace(`{nick}`, param)),
+//     enabled: param !== "",
+//   });
+// };
 
 // 이메일 인증 코드 발송 요청
 export const useSendEmailCode = (
@@ -45,6 +67,7 @@ export const useSendEmailCode = (
       }),
     enabled: false,
     retry: false,
+    gcTime: 1000 * 60 * 5,
   });
 };
 
@@ -84,7 +107,7 @@ export const useVerifyEmailCodeMutation = (
 // 닉네임 요청
 export const useUserNickQuery = (): UseQueryResult<string, AxiosError> => {
   return useQuery({
-    queryKey: QueryKeys.member.nick(),
+    queryKey: QueryKeys.member.nick,
     queryFn: () =>
       axios
         .get<IResponse<string>>(API.USER.NICK)

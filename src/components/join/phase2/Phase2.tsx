@@ -53,7 +53,7 @@ const Phase2 = () => {
     }
   }, [verifyCode.cd]);
 
-  // 붙여넣기시 한번에 적용
+  // 붙여넣기 적용 함수
   const pasteValue = (e: React.ClipboardEvent<HTMLInputElement>) => {
     const code: string = e.clipboardData.getData("text");
     if (isNumeric(code)) {
@@ -103,36 +103,7 @@ const Phase2 = () => {
   return (
     <div className={`phase ${joinValid.phase === 1 && "active"}`}>
       <div className={"verify-code-wrapper"}>
-        <div className={"title"}>
-          {/*{status === "success" ? (*/}
-          {/*  <>인증되었습니다!</>*/}
-          {/*) : status === "error" ? (*/}
-          {/*  <>{joinValid.emailCheck.errorMsg}</>*/}
-          {/*) : status === "pending" ? (*/}
-          {/*  <>...</>*/}
-          {/*) : (*/}
-          {/*  <>*/}
-          {/*    이메일로 발송된 인증코드를 입력해주세요! <br />*/}
-          {/*    이메일이 수신되지 않았을 경우 스팸함을 확인해주세요!*/}
-          {/*  </>*/}
-          {/*)}*/}
-
-          {/*{status === "success" && joinValid.emailCheck.isValid ? (*/}
-          {/*  <>인증되었습니다!</>*/}
-          {/*) : (*/}
-          {/*  <>{joinValid.emailCheck.errorMsg}</>*/}
-          {/*)}*/}
-          {/*{status === "error" && <>{joinValid.emailCheck.errorMsg}</>}*/}
-          {/*{status !== "success" && status !== "error" && (*/}
-          {/*  <>*/}
-          {/*    이메일로 발송된 인증코드를 입력해주세요! <br />*/}
-          {/*    이메일이 수신되지 않았을 경우 스팸함을 확인해주세요!*/}
-          {/*  </>*/}
-          {/*)}*/}
-
-          {title}
-        </div>
-        {/*<div className={"title"}>{title}</div>*/}
+        <div className={"title"}>{title}</div>
         <div className={"verify-code-area"}>
           {Array.from({ length: 6 }).map((_, index: number) => {
             return (
@@ -143,6 +114,7 @@ const Phase2 = () => {
                 ref={(el: HTMLInputElement) => {
                   focusRef.current[index] = el;
                 }}
+                disabled={joinValid.emailCheck.isValid}
                 onPaste={(e) => pasteValue(e)}
                 onKeyDown={(e) => keyDownHandler(e, index)}
                 onChange={(e) => changeHandler(e, index)}

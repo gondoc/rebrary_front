@@ -1,38 +1,56 @@
 import JoinRowInput from "@/components/join/common/JoinRowInput.tsx";
 import useUserStore from "@/store/userStore.ts";
 import { useEffect, useMemo } from "react";
+import { useUserNickDupCheck } from "@/reactQuery/memberQuery.ts";
 
 const UserNickArea = () => {
   const { joinPayload, setJoinPayload, joinValid, setJoinValid } =
     useUserStore();
 
-  useEffect(() => {
-    if (joinPayload.userNick) {
-      if (validUserNick) {
-        setJoinValid({
-          ...joinValid,
-          nick: { isValid: true },
-        });
-      } else {
-        setJoinValid({
-          ...joinValid,
-          nick: {
-            isValid: false,
-            errorMsg: "5글자 이상 15글자 이내 여야 합니다.",
-          },
-        });
-      }
-    }
-  }, [joinPayload.userNick]);
+  // const { refetch: findIsDupNick } = useUserNickDupCheck(joinPayload.userNick);
+  const isDupNick: boolean = useUserNickDupCheck(joinPayload.userNick);
 
-  const validationUserNickConfirm = (userNick: string): boolean => {
-    const lengthPattern = /^.{5,15}$/;
-    return lengthPattern.test(userNick);
-  };
+  useEffect(() => {
+    if (
+      joinPayload.userNick &&
+      joinPayload.userNick.length > 0 &&
+      !validUserNick
+    ) {
+      return setJoinValid({
+        ...joinValid,
+        nick: {
+          isValid: false,
+          errorMsg: "5글자 이상 15글자 이내 여야 합니다.",
+        },
+      });
+    }
+
+    if (joinPayload.userNick.length === 0) {
+      return setJoinValid({
+        ...joinValid,
+        nick: {
+          isValid: false,
+        },
+      });
+    }
+
+    setJoinValid({
+      ...joinValid,
+      nick: isDupNick
+        ? {
+            isValid: false,
+            errorMsg: "사용할 수 없는 닉네임입니다.",
+          }
+        : { isValid: true },
+    });
+  }, [joinPayload.userNick, isDupNick]);
 
   const validUserNick: boolean = useMemo(() => {
-    return validationUserNickConfirm(joinPayload.userNick);
+    const lengthPattern = /^.{5,15}$/;
+    return lengthPattern.test(joinPayload.userNick);
   }, [joinPayload.userNick]);
+
+  // TODO: 닉네임에 설정할 한글, 영문, 숫자만을 허용하는 정규식 repl 함수
 
   return (
     <JoinRowInput
@@ -41,6 +59,7 @@ const UserNickArea = () => {
       type={"text"}
       placeholder={"별명 5~15자"}
       required={true}
+      autoFocus={true}
       errorMsg={
         joinValid.nick.errorMsg !== "" && joinValid.nick?.errorMsg
           ? joinValid.nick.errorMsg

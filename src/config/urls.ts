@@ -10,7 +10,8 @@ export const apiUrl = isDev
 export const API = {
   USER: {
     INFO: `${apiUrl}/user/signUp`,
-    ID_CHECK: `${apiUrl}/user/check/{id}`,
+    ID_CHECK: `${apiUrl}/user/checkId/{id}`,
+    NICK_CHECK: `${apiUrl}/user/checkNick/{nick}`,
     SEND_CODE: `${apiUrl}/user/reqCd`,
     VERIFY_CODE: `${apiUrl}/user/verifyCd`,
     NICK: `${apiUrl}/user/nick`,

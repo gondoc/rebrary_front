@@ -6,12 +6,13 @@ interface EmailVerifyCodeInputProps {
   onPaste: (e: React.ClipboardEvent<HTMLInputElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, index: number) => void;
+  disabled?: boolean;
 }
 
 const EmailVerifyCodeInput = forwardRef<
   HTMLInputElement,
   EmailVerifyCodeInputProps
->(({ index, value, onPaste, onKeyDown, onChange }, ref) => {
+>(({ index, value, onPaste, onKeyDown, onChange, disabled }, ref) => {
   return (
     <input
       type="text"
@@ -23,6 +24,7 @@ const EmailVerifyCodeInput = forwardRef<
       onPaste={(e) => onPaste(e)}
       onChange={(e) => onChange(e, index)}
       onKeyDown={(e) => onKeyDown(e, index)}
+      disabled={disabled && disabled}
     />
   );
 });

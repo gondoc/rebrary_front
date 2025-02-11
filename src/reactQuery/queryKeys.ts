@@ -3,9 +3,10 @@ export const QueryKeys = {
     all: ["member"] as const,
     // info: () => [...QueryKeys.member.all, "info"] as const,
     info: ["member", "info"] as const,
-    id: (id: string) => [...QueryKeys.member.all, "id", id] as const,
-    nick: () => [...QueryKeys.member.all, "nick"] as const,
-    // nick: ["member", "nick"] as const,
+    idCheck: (id: string) => [...QueryKeys.member.all, "id", id] as const,
+    nick: ["member", "nick"] as const,
+    nickCheck: (nick: string) =>
+      [...QueryKeys.member.all, "nick", nick] as const,
     email: {
       codeSend: (email: string) =>
         [...QueryKeys.member.all, "code-send", email] as const,

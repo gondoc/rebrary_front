@@ -61,20 +61,17 @@ const JoinPage = () => {
   const nextBtnClickHandler = () => {
     if (joinValid.phase === 0) {
       // 인증코드 발송 요청
-      sendCode().then(({ data }) => {
-        console.log("sendCode data ", data);
-      });
+      if (!joinValid.emailCheck.isValid) {
+        sendCode().then(({ data }) => {
+          console.log("sendCode data ", data);
+        });
+      }
       return nextValid();
     }
 
     if (joinValid.phase === 1) {
       // 닉네임 요청
       reqUserRandomNick().then(({ data }) => {
-        console.log("reqUserRandomNick data ", data);
-        // if (data?.data?.data) {
-        //   const randomNick: string = data?.data?.data;
-        //   setJoinPayload({ ...joinPayload, userNick: randomNick });
-        // }
         if (typeof data === "string") {
           setJoinPayload({ ...joinPayload, userNick: data });
         }
@@ -106,8 +103,8 @@ const JoinPage = () => {
         joinValid.pwConfirm.isValid
       );
     } else if (joinValid.phase === 1) {
-      // return !joinValid.emailCheck.isValid;
-      return false;
+      return !joinValid.emailCheck.isValid;
+      // return false;
     } else if (joinValid.phase === 2) {
       return !joinValid.nick.isValid;
     }
@@ -116,6 +113,10 @@ const JoinPage = () => {
   useEffect(() => {
     console.log("검증 ", joinValid);
   }, [joinValid]);
+
+  useEffect(() => {
+    console.log("검증 ", joinPayload);
+  }, [joinPayload]);
 
   const nextBtnStr = () => {
     if (joinValid.phase === 0) {
