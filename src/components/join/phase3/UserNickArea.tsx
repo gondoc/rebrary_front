@@ -7,8 +7,7 @@ const UserNickArea = () => {
   const { joinPayload, setJoinPayload, joinValid, setJoinValid } =
     useUserStore();
 
-  // const { refetch: findIsDupNick } = useUserNickDupCheck(joinPayload.userNick);
-  const isDupNick: boolean = useUserNickDupCheck(joinPayload.userNick);
+  const checkDupNick: boolean = useUserNickDupCheck(joinPayload.userNick);
 
   useEffect(() => {
     if (
@@ -36,14 +35,14 @@ const UserNickArea = () => {
 
     setJoinValid({
       ...joinValid,
-      nick: isDupNick
-        ? {
+      nick: checkDupNick
+        ? { isValid: true }
+        : {
             isValid: false,
             errorMsg: "사용할 수 없는 닉네임입니다.",
-          }
-        : { isValid: true },
+          },
     });
-  }, [joinPayload.userNick, isDupNick]);
+  }, [joinPayload.userNick, checkDupNick]);
 
   const validUserNick: boolean = useMemo(() => {
     const lengthPattern = /^.{5,15}$/;

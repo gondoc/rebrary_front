@@ -3,7 +3,7 @@ import useUserStore from "@/store/userStore.ts";
 import { useEffect } from "react";
 import { TErrorMsg } from "@/types/user.types.ts";
 
-const UserPwArea = () => {
+const PwInput = () => {
   const { joinPayload, setJoinPayload, joinValid, setJoinValid } =
     useUserStore();
 
@@ -76,4 +76,4 @@ const UserPwArea = () => {
   );
 };
 
-export default UserPwArea;
+export default PwInput;

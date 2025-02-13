@@ -2,15 +2,17 @@ import userStore from "@/store/userStore.ts";
 import { useEffect } from "react";
 import CommBackBtn from "@/components/common/CommBackBtn.tsx";
 import { useNavigate } from "react-router-dom";
-import Phase1 from "@/components/join/phase1/Phase1.tsx";
-import Phase2 from "@/components/join/phase2/Phase2.tsx";
-import Phase3 from "@/components/join/phase3/Phase3.tsx";
+import VerifyCodeArea from "@/components/join/phase2/VerifyCodeArea.tsx";
 import {
   useSendEmailCode,
   useUserJoinMutation,
   useUserNickQuery,
 } from "@/reactQuery/memberQuery.ts";
 import { INIT_JOIN_PAYLOAD, INIT_JOIN_VALID } from "@/const/join.const.ts";
+import { IJoinValid } from "@/types/user.interface.ts";
+import UserNickArea from "@/components/join/phase3/UserNickArea.tsx";
+import UserIdPwArea from "@/components/join/phase1/UserIdPwArea.tsx";
+import JoinSuccessArea from "@/components/join/phase4/JoinSuccessArea.tsx";
 
 const JoinPage = () => {
   const navigator = useNavigate();
@@ -26,7 +28,7 @@ const JoinPage = () => {
   const { refetch: reqUserRandomNick } = useUserNickQuery();
 
   const { mutate: register } = useUserJoinMutation(
-    () => console.log("성공!"),
+    () => nextValid(),
     () => console.log("실패"),
   );
 
@@ -79,9 +81,29 @@ const JoinPage = () => {
       return nextValid();
     }
 
-    if (joinValid.phase === 2 && joinValid.topPhase === 2) {
+    if (
+      joinValid.phase === 2 &&
+      joinValid.topPhase === 2 &&
+      isAllValid(joinValid)
+    ) {
       return register(joinPayload);
     }
+
+    if (joinValid.phase === 3 && joinValid.topPhase === 3) {
+      setJoinValid(INIT_JOIN_VALID);
+      setJoinPayload(INIT_JOIN_PAYLOAD);
+      return navigator("/login");
+    }
+  };
+
+  const isAllValid = (joinValid: IJoinValid): boolean => {
+    return (
+      joinValid.email.isValid &&
+      joinValid.pw.isValid &&
+      joinValid.pwConfirm.isValid &&
+      joinValid.emailCheck.isValid &&
+      joinValid.nick.isValid
+    );
   };
 
   const nextValid = () => {
@@ -125,6 +147,8 @@ const JoinPage = () => {
       return "닉네임 설정";
     } else if (joinValid.phase === 2) {
       return "회원가입 완료";
+    } else if (joinValid.phase === 3) {
+      return "로그인 하기";
     }
   };
 
@@ -132,7 +156,9 @@ const JoinPage = () => {
     <div className={"join-wrapper"}>
       <div className="join-container">
         <div className={"back-btn-wrapper"}>
-          <CommBackBtn onClickHandler={() => prevBtnClickHandler()} />
+          {!(joinValid.phase === 3 && joinValid.topPhase === 3) && (
+            <CommBackBtn onClickHandler={() => prevBtnClickHandler()} />
+          )}
         </div>
         <div className="title-area">
           <div className={"logo"}>RE;BRARY</div>
@@ -141,9 +167,16 @@ const JoinPage = () => {
         </div>
 
         <form className={"join-area"}>
-          <Phase1 />
-          <Phase2 />
-          <Phase3 />
+          {Array.from({ length: 4 }).map((_, index: number) => {
+            return (
+              <div className={`phase ${joinValid.phase === index && "active"}`}>
+                {index === 0 && <UserIdPwArea />}
+                {index === 1 && <VerifyCodeArea />}
+                {index === 2 && <UserNickArea />}
+                {index === 3 && <JoinSuccessArea />}
+              </div>
+            );
+          })}
           <div className={"button-wrapper"}>
             {/*<button*/}
             {/*  type="button"*/}
@@ -165,9 +198,11 @@ const JoinPage = () => {
           </div>
         </form>
       </div>
-      <div className={"progress-bar-wrapper"}>
-        <div className={`progress-bar phase${joinValid.topPhase}`} />
-      </div>
+      {!(joinValid.phase === 3 && joinValid.topPhase === 3) && (
+        <div className={"progress-bar-wrapper"}>
+          <div className={`progress-bar phase${joinValid.topPhase}`} />
+        </div>
+      )}
     </div>
   );
 };

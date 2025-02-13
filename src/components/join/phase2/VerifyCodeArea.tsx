@@ -7,7 +7,7 @@ import {
   useVerifyEmailCodeMutation,
 } from "@/reactQuery/memberQuery.ts";
 
-const Phase2 = () => {
+const VerifyCodeArea = () => {
   const { joinValid, setJoinValid, joinPayload, verifyCode, setVerifyCode } =
     useUserStore();
   const [title, setTitle] = useState<string>(
@@ -101,29 +101,27 @@ const Phase2 = () => {
   };
 
   return (
-    <div className={`phase ${joinValid.phase === 1 && "active"}`}>
-      <div className={"verify-code-wrapper"}>
-        <div className={"title"}>{title}</div>
-        <div className={"verify-code-area"}>
-          {Array.from({ length: 6 }).map((_, index: number) => {
-            return (
-              <EmailVerifyCodeInput
-                key={`EMAIL_VERIFY_CODE_INPUT_${index}`}
-                index={index}
-                value={verifyCode.cd[index]}
-                ref={(el: HTMLInputElement) => {
-                  focusRef.current[index] = el;
-                }}
-                disabled={joinValid.emailCheck.isValid}
-                onPaste={(e) => pasteValue(e)}
-                onKeyDown={(e) => keyDownHandler(e, index)}
-                onChange={(e) => changeHandler(e, index)}
-              />
-            );
-          })}
-        </div>
+    <div className={"verify-code-wrapper"}>
+      <div className={"title"}>{title}</div>
+      <div className={"verify-code-area"}>
+        {Array.from({ length: 6 }).map((_, index: number) => {
+          return (
+            <EmailVerifyCodeInput
+              key={`EMAIL_VERIFY_CODE_INPUT_${index}`}
+              index={index}
+              value={verifyCode.cd[index]}
+              ref={(el: HTMLInputElement) => {
+                focusRef.current[index] = el;
+              }}
+              disabled={joinValid.emailCheck.isValid}
+              onPaste={(e) => pasteValue(e)}
+              onKeyDown={(e) => keyDownHandler(e, index)}
+              onChange={(e) => changeHandler(e, index)}
+            />
+          );
+        })}
       </div>
     </div>
   );
 };
-export default Phase2;
+export default VerifyCodeArea;

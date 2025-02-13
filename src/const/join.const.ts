@@ -18,6 +18,8 @@ export const INIT_JOIN_VALID: IJoinValid = {
   // phase: 1,
   // topPhase: 2,
   // phase: 2,
+  // topPhase: 3,
+  // phase: 3,
   email: INIT_VALID,
   pw: INIT_VALID,
   pwConfirm: INIT_VALID,

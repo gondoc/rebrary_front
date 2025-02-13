@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { IValid } from "@/types/user.interface.ts";
 import { isEqual } from "@/util/commonUtil.ts";
 
-const UserPwConfirmArea = () => {
+const PwConfirmInput = () => {
   const { joinPayload, setJoinPayload, joinValid, setJoinValid } =
     useUserStore();
 
@@ -53,4 +53,4 @@ const UserPwConfirmArea = () => {
   );
 };
 
-export default UserPwConfirmArea;
+export default PwConfirmInput;

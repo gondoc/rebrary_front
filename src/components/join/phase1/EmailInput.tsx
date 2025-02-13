@@ -3,7 +3,7 @@ import { useUserEmailDupCheck } from "@/reactQuery/memberQuery.ts";
 import useUserStore from "@/store/userStore.ts";
 import JoinRowInput from "@/components/join/common/JoinRowInput.tsx";
 
-const UserEmailArea = () => {
+const EmailInput = () => {
   const { joinPayload, setJoinPayload, joinValid, setJoinValid } =
     useUserStore();
   const { refetch: idCheck } = useUserEmailDupCheck(joinPayload.userEmail);
@@ -15,10 +15,10 @@ const UserEmailArea = () => {
       );
       if (userEmailValid) {
         idCheck().then(({ data }) => {
-          const isNotDuplicate: boolean = data?.data?.data as boolean;
+          const checkDupEmail: boolean = data?.data?.data as boolean;
           setJoinValid({
             ...joinValid,
-            email: isNotDuplicate
+            email: checkDupEmail
               ? { isValid: true }
               : {
                   isValid: false,
@@ -67,4 +67,4 @@ const UserEmailArea = () => {
   );
 };
 
-export default UserEmailArea;
+export default EmailInput;

@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import useUserStore from "@/store/userStore.ts";
+import { INIT_JOIN_PAYLOAD, INIT_JOIN_VALID } from "@/const/join.const.ts";
 
 const LoginPage = () => {
   const navigator = useNavigate();
+  const { setJoinPayload, setJoinValid } = useUserStore();
 
   // const [cookies, setCookie, remove] = useCookies(["rememberMember"]);
   // useEffect(() => {
@@ -60,7 +63,15 @@ const LoginPage = () => {
         </div>
         <div className={"register-area"}>
           아직 회원이 아니신가요?&nbsp;
-          <a onClick={() => navigator("/join")}>회원가입</a>
+          <a
+            onClick={() => {
+              setJoinValid(INIT_JOIN_VALID);
+              setJoinPayload(INIT_JOIN_PAYLOAD);
+              navigator("/join");
+            }}
+          >
+            회원가입
+          </a>
         </div>
       </div>
     </div>
