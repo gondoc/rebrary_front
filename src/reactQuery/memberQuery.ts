@@ -58,7 +58,8 @@ export const useUserNickDupCheck = (param: string): boolean => {
 // 이메일 인증 코드 발송 요청
 export const useSendEmailCode = (
   email: string,
-): UseQueryResult<AxiosResponse<IResponse<boolean>>, AxiosError> => {
+  // ): UseQueryResult<AxiosResponse<IResponse<number>>, AxiosError> => {
+): UseQueryResult<number, AxiosError> => {
   return useQuery({
     queryKey: [QueryKeys.member.email.codeSend(email)],
     queryFn: () =>
@@ -67,14 +68,14 @@ export const useSendEmailCode = (
       }),
     enabled: false,
     retry: false,
-    gcTime: 1000 * 60 * 5,
+    select: (data) => data?.data?.data,
   });
 };
 
 // 이메일 인증 코드 검증 요청
 export const useVerifyEmailCodeMutation = (
-  successHandler: (res: boolean) => void,
-  failHandler: () => void,
+  successHandler?: (res: boolean) => void,
+  failHandler?: () => void,
 ): UseMutationResult<
   boolean,
   AxiosError,
@@ -95,12 +96,16 @@ export const useVerifyEmailCodeMutation = (
 
     onSuccess: (res) => {
       console.log("useVerifyEmailCodeMutation onSuccess  res \n", res);
-      successHandler(res);
+      if (successHandler) {
+        successHandler(res);
+      }
     },
 
     onError: (res) => {
       console.log("useVerifyEmailCodeMutation onError  res \n", res);
-      failHandler();
+      if (failHandler) {
+        failHandler();
+      }
     },
   });
 

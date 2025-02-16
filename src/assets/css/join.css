@@ -138,9 +138,19 @@
     align-items: center;
     justify-content: center;
     width: 422px;
-    height: 45px;
+    height: 70px;
     font-size: 19px;
     white-space: pre-wrap;
+    flex-direction: column;
+
+    div {
+        margin-top: 4px;
+        font-size: 17px;
+
+        span {
+            border-bottom: 2px solid #DEAA79;;
+        }
+    }
 }
 
 .join-container .join-area .verify-code-wrapper .verify-code-area {
@@ -211,6 +221,12 @@
             background-color: #D0CFCF;
         }
     }
+}
+
+.join-container .join-area button.re-fetch-button {
+    width: 130px;
+    height: 35px;
+
 }
 
 .join-wrapper .join-container .back-btn-wrapper {

@@ -20,11 +20,12 @@ export interface IJoinValid {
   email: IValid;
   pw: IValid;
   pwConfirm: IValid;
-  emailCheck: IValid;
+  emailVerify: IValid;
   nick: IValid;
 }
 
 export interface IValid {
   isValid: boolean;
   errorMsg?: TErrorMsg;
+  time?: number;
 }

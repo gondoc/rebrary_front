@@ -40,7 +40,7 @@ const JoinPage = () => {
       return navigator("/login");
     }
     if (joinValid.phase === 1) {
-      if (!joinValid.emailCheck.isValid) {
+      if (!joinValid.emailVerify.isValid) {
         // 인증이 안되어 있는 경우 인증번호 초기화
         setVerifyCode([]);
       }
@@ -63,9 +63,12 @@ const JoinPage = () => {
   const nextBtnClickHandler = () => {
     if (joinValid.phase === 0) {
       // 인증코드 발송 요청
-      if (!joinValid.emailCheck.isValid) {
+      if (!joinValid.emailVerify.isValid && !joinValid.emailVerify?.time) {
         sendCode().then(({ data }) => {
-          console.log("sendCode data ", data);
+          console.debug(
+            "sendEmailCode request Success !! available at : ",
+            data,
+          );
         });
       }
       return nextValid();
@@ -101,7 +104,7 @@ const JoinPage = () => {
       joinValid.email.isValid &&
       joinValid.pw.isValid &&
       joinValid.pwConfirm.isValid &&
-      joinValid.emailCheck.isValid &&
+      joinValid.emailVerify.isValid &&
       joinValid.nick.isValid
     );
   };
@@ -125,7 +128,7 @@ const JoinPage = () => {
         joinValid.pwConfirm.isValid
       );
     } else if (joinValid.phase === 1) {
-      return !joinValid.emailCheck.isValid;
+      return !joinValid.emailVerify.isValid;
       // return false;
     } else if (joinValid.phase === 2) {
       return !joinValid.nick.isValid;
@@ -169,7 +172,10 @@ const JoinPage = () => {
         <form className={"join-area"}>
           {Array.from({ length: 4 }).map((_, index: number) => {
             return (
-              <div className={`phase ${joinValid.phase === index && "active"}`}>
+              <div
+                key={`JOIN_AREA_PHASE_${index}`}
+                className={`phase ${joinValid.phase === index && "active"}`}
+              >
                 {index === 0 && <UserIdPwArea />}
                 {index === 1 && <VerifyCodeArea />}
                 {index === 2 && <UserNickArea />}

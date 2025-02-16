@@ -23,6 +23,6 @@ export const INIT_JOIN_VALID: IJoinValid = {
   email: INIT_VALID,
   pw: INIT_VALID,
   pwConfirm: INIT_VALID,
-  emailCheck: INIT_VALID,
+  emailVerify: INIT_VALID,
   nick: INIT_VALID,
 };

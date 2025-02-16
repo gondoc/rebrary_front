@@ -1,25 +1,23 @@
 import useUserStore from "@/store/userStore.ts";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import EmailVerifyCodeInput from "@/components/join/phase2/EmailVerifyCodeInput.tsx";
 import { isNumeric, typingNumCheck } from "@/util/commonUtil.ts";
 import {
   useSendEmailCode,
   useVerifyEmailCodeMutation,
 } from "@/reactQuery/memberQuery.ts";
+import EmailVerifyTitle from "@/components/join/phase2/EmailVerifyTitle.tsx";
 
 const VerifyCodeArea = () => {
   const { joinValid, setJoinValid, joinPayload, verifyCode, setVerifyCode } =
     useUserStore();
-  const [title, setTitle] = useState<string>(
-    "이메일로 발송된 인증코드를 입력해주세요!\n이메일이 수신되지 않았을 경우 스팸함을 확인해주세요!",
-  );
   const focusRef = useRef<(HTMLInputElement | null)[]>(new Array(6).fill(null));
-  const { data } = useSendEmailCode(joinPayload.userEmail);
-  const { mutate: verify, status } = useVerifyEmailCodeMutation(
+  const { data: emailCodeReqRes } = useSendEmailCode(joinPayload.userEmail);
+  const { mutate: verify } = useVerifyEmailCodeMutation(
     (res: boolean) =>
       setJoinValid({
         ...joinValid,
-        emailCheck: res
+        emailVerify: res
           ? { isValid: true }
           : {
               isValid: false,
@@ -29,7 +27,7 @@ const VerifyCodeArea = () => {
     () =>
       setJoinValid({
         ...joinValid,
-        emailCheck: {
+        emailVerify: {
           isValid: false,
           errorMsg: "오류가 발생했습니다. 잠시후 시도 바랍니다.",
         },
@@ -37,14 +35,17 @@ const VerifyCodeArea = () => {
   );
 
   useEffect(() => {
-    if (data?.data?.data) {
-      if (status === "success" && joinValid.emailCheck.isValid) {
-        setTitle("인증되었습니다!");
-      } else {
-        setTitle(joinValid.emailCheck.errorMsg as string);
-      }
+    if (emailCodeReqRes) {
+      const unixTime: number = emailCodeReqRes;
+      setJoinValid({
+        ...joinValid,
+        emailVerify: {
+          ...joinValid.emailVerify,
+          time: unixTime,
+        },
+      });
     }
-  }, [status, joinValid.emailCheck]);
+  }, [emailCodeReqRes]);
 
   useEffect(() => {
     // 6글자 작성완료 여부 검증
@@ -58,7 +59,7 @@ const VerifyCodeArea = () => {
     const code: string = e.clipboardData.getData("text");
     if (isNumeric(code)) {
       setVerifyCode([...code.split("")]);
-      focusRef.current[5]?.focus();
+      focusRef.current[focusRef.current.length]?.focus();
     }
   };
 
@@ -102,7 +103,10 @@ const VerifyCodeArea = () => {
 
   return (
     <div className={"verify-code-wrapper"}>
-      <div className={"title"}>{title}</div>
+      {/* 이메일 인증코드 타이틀 영역 */}
+      <EmailVerifyTitle />
+
+      {/* 이메일 인증코드 작성 영역 */}
       <div className={"verify-code-area"}>
         {Array.from({ length: 6 }).map((_, index: number) => {
           return (
@@ -113,7 +117,7 @@ const VerifyCodeArea = () => {
               ref={(el: HTMLInputElement) => {
                 focusRef.current[index] = el;
               }}
-              disabled={joinValid.emailCheck.isValid}
+              disabled={joinValid.emailVerify.isValid}
               onPaste={(e) => pasteValue(e)}
               onKeyDown={(e) => keyDownHandler(e, index)}
               onChange={(e) => changeHandler(e, index)}
