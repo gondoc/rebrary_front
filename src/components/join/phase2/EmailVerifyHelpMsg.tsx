@@ -2,21 +2,37 @@ import useTimer from "@/hook/useTimer.ts";
 import { useSendEmailCode } from "@/reactQuery/memberQuery.ts";
 import useUserStore from "@/store/userStore.ts";
 import dayjs from "dayjs";
+import { useQueryClient } from "@tanstack/react-query";
+import { QueryKeys } from "@/reactQuery/queryKeys.ts";
+import { useEffect } from "react";
 
 const EmailVerifyHelpMsg = () => {
+  const queryClient = useQueryClient();
   const { joinPayload, joinValid } = useUserStore();
 
   const { data: emailCodeReqRes, refetch: reqReFetch } = useSendEmailCode(
     joinPayload.userEmail,
   );
-  const timer = useTimer(emailCodeReqRes);
+
+  useEffect(() => {
+    console.log("emailCodeReqRes ", emailCodeReqRes);
+  }, [emailCodeReqRes]);
+
+  const timer: boolean = useTimer(emailCodeReqRes);
 
   const requestReSendEmailCd = () => {
     if (joinValid.emailVerify.isValid) {
       return;
     }
 
-    return reqReFetch();
+    return reqReFetch().then((res) => {
+      console.log("res ", res);
+      queryClient
+        .invalidateQueries({
+          queryKey: QueryKeys.member.email.codeSend(joinPayload.userEmail),
+        })
+        .then(() => console.log("success"));
+    });
   };
 
   return !timer ? (

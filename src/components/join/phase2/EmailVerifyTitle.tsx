@@ -30,7 +30,7 @@ const EmailVerifyTitle = () => {
   return (
     <div className={"title"}>
       {title}
-      {isFetched && <EmailVerifyHelpMsg />}
+      {!joinValid.emailVerify.isValid && isFetched && <EmailVerifyHelpMsg />}
     </div>
   );
 };

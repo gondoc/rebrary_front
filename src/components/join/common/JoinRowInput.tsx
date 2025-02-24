@@ -37,14 +37,15 @@ const JoinRowInput = ({
   return (
     <div className="input-area" key={label}>
       <label>{label}</label>
-      <div className={className}>
+      <div className={className && className}>
         <input
           autoComplete={"off"}
           type={type}
           value={typing}
+          name={label}
           autoFocus={autoFocus}
           onChange={(e) => setTyping(e.target.value)}
-          className={`${inputClassName} ${errorMsg !== "" && "isError"}`}
+          className={`${inputClassName && inputClassName} ${errorMsg !== "" && "isError"}`}
           placeholder={placeholder}
           required={required}
         />

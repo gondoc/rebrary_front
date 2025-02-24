@@ -58,7 +58,6 @@ const UserNickArea = () => {
       type={"text"}
       placeholder={"별명 5~15자"}
       required={true}
-      autoFocus={true}
       errorMsg={
         joinValid.nick.errorMsg !== "" && joinValid.nick?.errorMsg
           ? joinValid.nick.errorMsg
