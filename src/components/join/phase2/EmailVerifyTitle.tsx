@@ -15,10 +15,9 @@ const EmailVerifyTitle = () => {
     joinPayload.userEmail,
   );
   const { status } = useVerifyEmailCodeMutation();
-
   useEffect(() => {
-    if (emailCodeReqRes) {
-      if (status === "success" && joinValid.emailVerify.isValid) {
+    if (isFetched && emailCodeReqRes) {
+      if (joinValid.emailVerify.isValid) {
         return setTitle("인증되었습니다!");
       }
       if (!joinValid.emailVerify.isValid && joinValid.emailVerify.errorMsg) {

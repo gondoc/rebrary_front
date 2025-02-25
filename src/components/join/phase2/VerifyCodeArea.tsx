@@ -36,12 +36,11 @@ const VerifyCodeArea = () => {
 
   useEffect(() => {
     if (emailCodeReqRes) {
-      const unixTime: number = emailCodeReqRes;
       setJoinValid({
         ...joinValid,
         emailVerify: {
           ...joinValid.emailVerify,
-          time: unixTime,
+          time: emailCodeReqRes,
         },
       });
     }

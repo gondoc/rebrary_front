@@ -22,6 +22,7 @@ const JoinPage = () => {
     joinValid,
     setJoinValid,
     setVerifyCode,
+    setInitState,
   } = userStore();
 
   const { refetch: sendCode } = useSendEmailCode(joinPayload.userEmail);
@@ -35,8 +36,7 @@ const JoinPage = () => {
   // 뒤로 가기 버튼 클릭
   const prevBtnClickHandler = () => {
     if (joinValid.phase === 0) {
-      setJoinPayload(INIT_JOIN_PAYLOAD);
-      setJoinValid(INIT_JOIN_VALID);
+      setInitState();
       return navigator("/login");
     }
     if (joinValid.phase === 1) {
@@ -184,16 +184,6 @@ const JoinPage = () => {
             );
           })}
           <div className={"button-wrapper"}>
-            {/*<button*/}
-            {/*  type="button"*/}
-            {/*  disabled={phaseValid()}*/}
-            {/*  onClick={() => nextBtnClickHandler()}*/}
-            {/*>*/}
-            {/*  test*/}
-            {/*</button>*/}
-            {/*<a href="sms:rebrary.official@gmail.com?body=123456">*/}
-            {/*  인증문자 보내기*/}
-            {/*</a>*/}
             <button
               type="button"
               disabled={phaseValid()}

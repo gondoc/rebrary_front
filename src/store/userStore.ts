@@ -11,6 +11,9 @@ interface IUserStore {
 
   verifyCode: { cd: string[]; getCodes: () => string; valid: () => boolean };
   setVerifyCode: (arg: string[]) => void;
+
+  // 초기화
+  setInitState: () => void;
 }
 
 const useUserStore = create<IUserStore>((set) => ({
@@ -36,6 +39,24 @@ const useUserStore = create<IUserStore>((set) => ({
   setVerifyCode: (arg: string[]) =>
     set(() => ({
       verifyCode: { ...useUserStore.getState().verifyCode, cd: arg },
+    })),
+
+  setInitState: () =>
+    set(() => ({
+      joinPayload: INIT_JOIN_PAYLOAD,
+      joinValid: INIT_JOIN_VALID,
+      verifyCode: {
+        cd: [],
+        getCodes: (): string => {
+          return useUserStore.getState().verifyCode.cd.join().replace(/,/g, "");
+        },
+        valid: (): boolean => {
+          return (
+            useUserStore.getState().verifyCode.cd.join().replace(/,/g, "")
+              .length === 6
+          );
+        },
+      },
     })),
 }));
 

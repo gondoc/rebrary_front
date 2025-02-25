@@ -49,8 +49,6 @@ const UserNickArea = () => {
     return lengthPattern.test(joinPayload.userNick);
   }, [joinPayload.userNick]);
 
-  // TODO: 닉네임에 설정할 한글, 영문, 숫자만을 허용하는 정규식 repl 함수
-
   return (
     <JoinRowInput
       key={`JOIN_ROW_INPUT_USER_NICK_${joinPayload.userNick}`}

@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
 
-const useTimer = (unixTimestampMs: number | undefined): boolean => {
-  const [shouldRender, setShouldRender] = useState<boolean>(false);
+const useTimer = (expiryTimestamp: number | undefined): boolean => {
+  const [isExpired, setIsExpired] = useState<boolean>(false);
 
   useEffect(() => {
     // unixTimestamp가 undefined인 경우 early return
-    if (typeof unixTimestampMs === "undefined") {
-      setShouldRender(false);
+    if (typeof expiryTimestamp === "undefined") {
+      setIsExpired(false);
       return;
     }
 
+    if (expiryTimestamp) {
+      setIsExpired(false);
+    }
+
     // 밀리초를 초 단위로 변환
-    const targetTimeSeconds = Math.floor(unixTimestampMs / 1000);
+    const targetTimeSeconds = Math.floor(expiryTimestamp / 1000);
 
     const checkTime = () => {
       const currentTimeSeconds = Math.floor(Date.now() / 1000);
       if (currentTimeSeconds >= targetTimeSeconds) {
-        setShouldRender(true);
+        setIsExpired(true);
         return true;
       }
       return false;
@@ -42,9 +46,9 @@ const useTimer = (unixTimestampMs: number | undefined): boolean => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [unixTimestampMs]);
+  }, [expiryTimestamp]);
 
-  return shouldRender;
+  return isExpired;
 };
 
 export default useTimer;
